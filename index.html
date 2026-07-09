@@ -21,42 +21,63 @@
 
     <div class="scanlines" aria-hidden="true"></div>
 
+    <!-- CTI urgency ticker -->
+    <div class="cti-ticker-bar" aria-live="polite">
+      <span class="cti-ticker-label">LIVE CTI</span>
+      <div class="cti-ticker-wrap">
+        <div class="cti-ticker-track" id="cti-ticker-track"></div>
+      </div>
+      <span class="cti-urgency-pulse level-high" id="cti-urgency-pulse">● ACTIVE</span>
+    </div>
+
     <header class="site-header">
       <div class="header-block">
-        <span class="header-tag">SYS://PORTFOLIO</span>
-        <h1 class="header-name">GURUNANAK<br />ADHIKARI</h1>
+        <pre class="ascii-widget header-ascii" data-art="shield" data-toast="HEADER // DEFENSE POSTURE"></pre>
+        <div class="header-text">
+          <span class="header-tag">SYS://PORTFOLIO</span>
+          <h1 class="header-name">GURUNANAK ADHIKARI</h1>
+        </div>
       </div>
       <nav class="header-nav" aria-label="Main navigation">
-        <a href="#terminal">[ TERMINAL ]</a>
-        <a href="#about">[ ABOUT ]</a>
-        <a href="#experience">[ WORK ]</a>
-        <a href="#projects">[ PROJECTS ]</a>
-        <a href="#skills">[ SKILLS ]</a>
-        <a href="#contact">[ CONTACT ]</a>
+        <a href="#terminal">TERMINAL</a>
+        <a href="#about">ABOUT</a>
+        <a href="#experience">WORK</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#contact">CONTACT</a>
+        <a href="#cti-dashboard">CTI</a>
       </nav>
     </header>
 
     <main>
       <!-- HERO -->
       <section class="hero section" id="hero">
+        <pre class="ascii-divider ascii-widget" data-art="divider" aria-hidden="true"></pre>
         <div class="hero-grid">
-          <div class="hero-left brutal-box">
-            <p class="label">ROLE</p>
-            <h2 class="hero-title">
-              CYBERSECURITY<br />
-              <span class="accent">..</span>
-            </h2>
-            <p class="hero-sub">
-              ISC2 CC · AWS · Blue/Red Team · SOAR · SIEM
-            </p>
+          <pre class="ascii-widget hero-ascii" data-art="hero" data-toast="HERO // CYBER OPS ONLINE"></pre>
+          <div class="hero-left brutal-box interactive-card" data-interactive>
+            <div class="card-body">
+              <p class="label">ROLE</p>
+              <h2 class="hero-title">
+                CYBERSECURITY<br />
+                <span class="accent">..</span>
+              </h2>
+              <p class="hero-sub">
+                ISC2 CC · AWS · Blue/Red Team · SOAR · SIEM
+              </p>
+              <p class="card-hint">CLICK TO EXPAND</p>
+            </div>
           </div>
-          <div class="hero-right brutal-box inverted">
-            <p class="label">STATUS</p>
-            <p class="status-line">
-              <span class="blink">█</span> SEEKING OPPORTUNITIES
-            </p>
-            <p class="status-line">LOCATION: KATHMANDU, NEPAL</p>
-            <p class="status-line">CLEARANCE: STUDENT / OPEN</p>
+          <div class="hero-right brutal-box inverted interactive-card" data-interactive>
+            <div class="card-body">
+              <p class="label">STATUS</p>
+              <p class="status-line">
+                <span class="blink">█</span> SEEKING OPPORTUNITIES
+              </p>
+              <p class="status-line">LOCATION: KATHMANDU, NEPAL</p>
+              <p class="status-line">CLEARANCE: STUDENT / OPEN</p>
+              <p class="card-hint">CLICK TO EXPAND</p>
+            </div>
           </div>
         </div>
       </section>
@@ -64,6 +85,7 @@
       <!-- TERMINAL -->
       <section class="section" id="terminal">
         <div class="section-header">
+          <pre class="ascii-widget section-ascii" data-art="terminal" data-frame="0"></pre>
           <span class="section-num">01</span>
           <h2 class="section-title">COMMAND INTERFACE</h2>
         </div>
@@ -76,8 +98,16 @@
           </div>
           <div class="terminal-body" id="terminal-output"></div>
           <div class="terminal-input-line">
-            <span class="prompt">C:\portfolio&gt;</span>
-            <span id="terminal-cursor" class="cursor">█</span>
+            <span class="prompt" id="terminal-prompt">C:\portfolio&gt;</span>
+            <input
+              type="text"
+              id="terminal-input"
+              class="terminal-input"
+              spellcheck="false"
+              autocomplete="off"
+              autocapitalize="off"
+              aria-label="Terminal command input"
+            />
           </div>
         </div>
       </section>
@@ -85,11 +115,14 @@
       <!-- ABOUT -->
       <section class="section" id="about">
         <div class="section-header">
+          <pre class="ascii-widget section-ascii" data-art="about" data-frame="0"></pre>
           <span class="section-num">02</span>
           <h2 class="section-title">ABOUT</h2>
         </div>
         <div class="about-grid">
-          <div class="brutal-box about-text">
+          <div class="brutal-box about-text interactive-card">
+            <pre class="ascii-widget about-ascii" data-art="about" data-toast="ABOUT // ISC2 CC"></pre>
+            <div class="card-body">
             <p>
               Cybersecurity student and <strong>ISC2 Certified in Cybersecurity (CC)</strong>
               with technical exposure to Blue Team and Red Team fundamentals through
@@ -99,6 +132,8 @@
               Experienced in AWS cloud, web application testing, network traffic analysis,
               SIEM fundamentals, CTF challenges, and Python-based security scripting.
             </p>
+            <p class="card-hint">CLICK CARD FOR DETAILS</p>
+            </div>
           </div>
           <div class="brutal-box about-edu">
             <p class="label">EDUCATION</p>
@@ -116,11 +151,14 @@
       <!-- EXPERIENCE -->
       <section class="section" id="experience">
         <div class="section-header">
+          <pre class="ascii-widget section-ascii" data-art="aws" data-frame="0"></pre>
           <span class="section-num">03</span>
           <h2 class="section-title">EXPERIENCE</h2>
         </div>
         <div class="exp-list">
-          <article class="brutal-box exp-card">
+          <article class="brutal-box exp-card interactive-card">
+            <pre class="ascii-widget card-ascii" data-art="aws" data-toast="WORK // AWS DEVOPS"></pre>
+            <div class="card-body">
             <div class="exp-header">
               <h3>Data Automation &amp; AI Fellow (AWS DevOps)</h3>
               <span class="exp-date">FEB 2026 – PRESENT</span>
@@ -130,8 +168,12 @@
               <li>Deployed and managed lab-scale AWS infrastructure with DevOps workflows and security-focused automation.</li>
               <li>Completed AWS Cloud Practitioner and Solutions Architect Associate curriculum tracks.</li>
             </ul>
+            <p class="card-hint">CLICK TO TOGGLE</p>
+            </div>
           </article>
-          <article class="brutal-box exp-card">
+          <article class="brutal-box exp-card interactive-card">
+            <pre class="ascii-widget card-ascii" data-art="cyber" data-toast="WORK // CYBER EXTERN"></pre>
+            <div class="card-body">
             <div class="exp-header">
               <h3>Cyber Security Extern</h3>
               <span class="exp-date">APR 2025 – AUG 2025</span>
@@ -142,6 +184,8 @@
               <li>Vulnerability assessment &amp; hardening — log anomaly evaluation, port/firewall rule assessment.</li>
               <li>Web security CTFs (SQLi/XSS) and Python security scripts for sniffing and password verification.</li>
             </ul>
+            <p class="card-hint">CLICK TO TOGGLE</p>
+            </div>
           </article>
         </div>
       </section>
@@ -149,11 +193,14 @@
       <!-- PROJECTS -->
       <section class="section" id="projects">
         <div class="section-header">
+          <pre class="ascii-widget section-ascii" data-art="honeypot" data-frame="0"></pre>
           <span class="section-num">04</span>
           <h2 class="section-title">PROJECTS</h2>
         </div>
         <div class="project-grid">
-          <article class="brutal-box project-card">
+          <article class="brutal-box project-card interactive-card">
+            <pre class="ascii-widget card-ascii" data-art="honeypot" data-toast="PROJECT // HONEYPOT CTI"></pre>
+            <div class="card-body">
             <span class="project-tag">CTI / THREE.JS</span>
             <h3>Global Honeypot Network &amp; Threat Intel Pipeline</h3>
             <p>
@@ -164,8 +211,12 @@
             <div class="project-stack">
               <span>DigitalOcean</span><span>Supabase</span><span>Three.js</span><span>Gemini AI</span>
             </div>
+            <p class="card-hint">CLICK TO ACTIVATE</p>
+            </div>
           </article>
-          <article class="brutal-box project-card accent-border">
+          <article class="brutal-box project-card accent-border interactive-card">
+            <pre class="ascii-widget card-ascii" data-art="soar" data-toast="PROJECT // AWS SOAR"></pre>
+            <div class="card-body">
             <span class="project-tag">SOAR / AWS</span>
             <h3>AWS SOAR Engine</h3>
             <p>
@@ -176,8 +227,12 @@
             <div class="project-stack">
               <span>AWS WAF</span><span>Lambda</span><span>S3</span><span>Twilio</span>
             </div>
+            <p class="card-hint">CLICK TO ACTIVATE</p>
+            </div>
           </article>
-          <article class="brutal-box project-card">
+          <article class="brutal-box project-card interactive-card">
+            <pre class="ascii-widget card-ascii" data-art="splunk" data-toast="PROJECT // SOC LAB"></pre>
+            <div class="card-body">
             <span class="project-tag">SOC / SPLUNK</span>
             <h3>AWS &amp; Splunk SOC Lab</h3>
             <p>
@@ -188,6 +243,8 @@
             <div class="project-stack">
               <span>AWS</span><span>Docker</span><span>Splunk</span><span>DVWA</span>
             </div>
+            <p class="card-hint">CLICK TO ACTIVATE</p>
+            </div>
           </article>
         </div>
       </section>
@@ -195,31 +252,42 @@
       <!-- SKILLS -->
       <section class="section" id="skills">
         <div class="section-header">
+          <pre class="ascii-widget section-ascii" data-art="skills" data-frame="0"></pre>
           <span class="section-num">05</span>
           <h2 class="section-title">SKILLS &amp; CERTS</h2>
         </div>
         <div class="skills-grid">
-          <div class="brutal-box skill-block">
+          <div class="brutal-box skill-block interactive-card">
+            <pre class="ascii-widget mini-ascii" data-art="skull" data-toast="TOOLS // ARMORY"></pre>
+            <div class="card-body">
             <p class="label">TOOLS</p>
             <div class="skill-tags">
               <span>Wireshark</span><span>Nmap</span><span>SQLmap</span>
               <span>Snort</span><span>Splunk</span><span>Kali Linux</span>
             </div>
+            <p class="card-hint">CLICK TAGS · CLICK CARD</p>
+            </div>
           </div>
-          <div class="brutal-box skill-block">
+          <div class="brutal-box skill-block interactive-card">
+            <div class="card-body">
             <p class="label">CONCEPTS</p>
             <div class="skill-tags">
               <span>Cloud Security (AWS)</span><span>SOAR</span><span>SIEM</span>
               <span>Network Security</span><span>Threat Hunting</span><span>OSINT</span>
             </div>
+            </div>
           </div>
-          <div class="brutal-box skill-block">
+          <div class="brutal-box skill-block interactive-card">
+            <div class="card-body">
             <p class="label">PROGRAMMING</p>
             <div class="skill-tags">
               <span>Python</span><span>Security Scripting</span><span>Automation</span>
             </div>
+            </div>
           </div>
-          <div class="brutal-box skill-block inverted">
+          <div class="brutal-box skill-block inverted interactive-card">
+            <pre class="ascii-widget mini-ascii" data-art="shield" data-toast="CERTS // VERIFIED"></pre>
+            <div class="card-body">
             <p class="label">CERTIFICATIONS</p>
             <ul class="cert-list">
               <li>ISC2 Certified in Cybersecurity (CC)</li>
@@ -227,6 +295,7 @@
               <li>Coursera: Splunk Knowledge Manager &amp; Search Expert</li>
               <li>Google &amp; IBM: Cybersecurity Professional Certificate</li>
             </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -234,10 +303,13 @@
       <!-- CONTACT -->
       <section class="section" id="contact">
         <div class="section-header">
+          <pre class="ascii-widget section-ascii" data-art="contact" data-frame="0"></pre>
           <span class="section-num">06</span>
           <h2 class="section-title">CONTACT</h2>
         </div>
-        <div class="contact-grid brutal-box inverted">
+        <div class="contact-wrapper">
+          <pre class="ascii-widget contact-ascii" data-art="contact" data-toast="CONTACT // OPEN CHANNEL"></pre>
+          <div class="contact-grid brutal-box inverted">
           <a href="mailto:gurunanakadhari1@gmail.com" class="contact-link">
             <span class="label">EMAIL</span>
             gurunanakadhari1@gmail.com
@@ -254,11 +326,90 @@
             <span class="label">GITHUB</span>
             /gurunanakadhikari
           </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTI DASHBOARD (CV Intel) -->
+      <section class="section cti-section" id="cti-dashboard">
+        <div class="section-header">
+          <span class="section-num cti-num">07</span>
+          <h2 class="section-title">CTI OPERATIONS — CV INTEL</h2>
+          <span class="cti-sim-status defense" id="cti-sim-status">▶ BLUE TEAM: CV DEFENSE POSTURE</span>
+        </div>
+
+        <div class="brutal-box cti-ascii-container">
+          <p class="label">ATTACK / DEFENSE SIMULATION — ASCII BATTLEFIELD</p>
+          <div class="cti-ascii-battle">
+            <pre id="ascii-red" class="ascii-art attack-art" aria-hidden="true"></pre>
+            <pre id="ascii-clash" class="ascii-art clash-art" aria-hidden="true"></pre>
+            <pre id="ascii-blue" class="ascii-art defense-art" aria-hidden="true"></pre>
+          </div>
+          <div class="cti-battle-labels">
+            <span class="cti-battle-side attack-side">▲ RED TEAM <strong id="cti-attack-rate">50%</strong></span>
+            <span class="cti-battle-side defense-side">▼ BLUE TEAM <strong id="cti-block-rate">50%</strong></span>
+          </div>
+          <div class="cti-battle-arena">
+            <div class="cti-attack-bar" id="cti-attack-bar"></div>
+            <div class="cti-battle-clash"></div>
+            <div class="cti-defense-bar" id="cti-defense-bar"></div>
+          </div>
+          <p class="cti-posture holding" id="cti-posture">SEEKING OPPORTUNITIES</p>
+        </div>
+
+        <div class="cti-dashboard-grid">
+          <div class="brutal-box cti-panel cti-operator-panel">
+            <p class="label">OPERATOR PROFILE</p>
+            <p class="cti-operator-name" id="cti-operator-name">GURUNANAK ADHIKARI</p>
+            <p class="cti-operator-meta" id="cti-operator-meta"></p>
+            <p class="cti-summary" id="cti-summary"></p>
+          </div>
+
+          <div class="brutal-box cti-panel cti-metrics-panel">
+            <p class="label">CV METRICS</p>
+            <div class="cti-metric-row">
+              <span class="cti-metric-label">EXPERIENCE ROLES</span>
+              <span class="cti-metric-value defense" id="cti-metric-exp">2</span>
+            </div>
+            <div class="cti-metric-row">
+              <span class="cti-metric-label">SECURITY PROJECTS</span>
+              <span class="cti-metric-value" id="cti-metric-projects">3</span>
+            </div>
+            <div class="cti-metric-row">
+              <span class="cti-metric-label">CERTIFICATIONS</span>
+              <span class="cti-metric-value" id="cti-metric-certs">4</span>
+            </div>
+            <div class="cti-metric-row">
+              <span class="cti-metric-label">SKILL DOMAINS</span>
+              <span class="cti-metric-value attack" id="cti-metric-skills">3</span>
+            </div>
+          </div>
+
+          <div class="brutal-box cti-panel cti-edu-panel">
+            <p class="label">EDUCATION</p>
+            <div class="cti-edu-block" id="cti-edu-block"></div>
+          </div>
+
+          <div class="brutal-box cti-panel cti-skills-panel">
+            <p class="label">TECHNICAL SKILLS</p>
+            <div id="cti-skills-block"></div>
+          </div>
+
+          <div class="brutal-box cti-panel cti-certs-panel">
+            <p class="label">CERTIFICATIONS</p>
+            <ul class="cert-list" id="cti-certs-block"></ul>
+          </div>
+
+          <div class="brutal-box cti-panel cti-feed-panel">
+            <p class="label">LIVE CV INTEL FEED — EXPERIENCE · PROJECTS · CERTS</p>
+            <div class="cti-feed" id="cti-feed"></div>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
+      <pre class="ascii-widget footer-ascii" data-art="footer" data-toast="FOOTER // HACK THE PLANET"></pre>
       <p>© 2026 GURUNANAK ADHIKARI — BUILT WITH RAW CONCRETE &amp; CODE</p>
       <p class="footer-mono">NEPALTAR, KATHMANDU, NEPAL</p>
     </footer>

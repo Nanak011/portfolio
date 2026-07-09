@@ -1,0 +1,168 @@
+/** Shared ASCII art library — click/hover widgets cycle through frames */
+
+export const ASCII_ART = {
+  hero: [
+    `  ┌─────────────┐
+  │  CYBER OPS  │
+  │   ┌─────┐   │
+  │   │ ◉ ◉ │   │
+  │   │  ▼  │   │
+  │   └─────┘   │
+  │  [ACCESS]   │
+  └─────────────┘`,
+    `  ┌─────────────┐
+  │  CYBER OPS  │
+  │   ┌─────┐   │
+  │   │ ◎ ◎ │   │
+  │   │  ω  │   │
+  │   └─────┘   │
+  │  SCANNING.. │
+  └─────────────┘`,
+    `  ┌─────────────┐
+  │  CYBER OPS  │
+  │   ┌─────┐   │
+  │   │ ▣ ▣ │   │
+  │   │  █  │   │
+  │   └─────┘   │
+  │  ARMED      │
+  └─────────────┘`,
+  ],
+  terminal: [
+    `   ___________
+  |  _______  |
+  | |       | |
+  | | >_    | |
+  | |_______| |
+  |___________|`,
+    `   ___________
+  |  _______  |
+  | |  $    | |
+  | | >_█   | |
+  | |_______| |
+  |___________|`,
+  ],
+  about: [
+    `    .---.
+   /     \\
+  |  CC   |
+  |  CERT |
+   \\     /
+    '---'`,
+    `    .---.
+   /  ★  \\
+  |  CC   |
+  | SECURE|
+   \\     /
+    '---'`,
+  ],
+  aws: [
+    `  ┌──AWS──┐
+  │ ☁ ▓▓▓ │
+  │ DEVOPS │
+  └───────┘`,
+    `  ┌──AWS──┐
+  │ ☁ ███ │
+  │ DEPLOY │
+  └───────┘`,
+  ],
+  cyber: [
+    `  ┌─SEC───┐
+  │ ◈ ◈ ◈ │
+  │ RECON  │
+  └───────┘`,
+    `  ┌─SEC───┐
+  │ ▣ ▣ ▣ │
+  │ HUNT   │
+  └───────┘`,
+  ],
+  honeypot: [
+    `  ┌─HONEYPOT┐
+  │  (.)_(.)  │
+  │   PORT    │
+  │  :8080    │
+  └──────────┘`,
+    `  ┌─HONEYPOT┐
+  │  (!)_(!)  │
+  │  TRAPPED  │
+  │  ATTACKER │
+  └──────────┘`,
+  ],
+  soar: [
+    `  ┌─SOAR──┐
+  │ ⚡AUTO │
+  │ WAF ON │
+  │ λ EXEC │
+  └───────┘`,
+    `  ┌─SOAR──┐
+  │ ⚡FIRE │
+  │ BLOCK! │
+  │ ☎ CALL│
+  └───────┘`,
+  ],
+  splunk: [
+    `  ┌SPLUNK─┐
+  │ ▓▓LOG▓▓│
+  │ SEARCH │
+  │ SIEM   │
+  └───────┘`,
+    `  ┌SPLUNK─┐
+  │ ████   │
+  │ ALERT! │
+  │ SOC    │
+  └───────┘`,
+  ],
+  skills: [
+    `  [TOOLS]
+  |W|N|S|K|
+  \\_____/
+   ARMORY`,
+    `  [TOOLS]
+  |P|A|W|S|
+  \\_____/
+  LOADED!`,
+  ],
+  contact: [
+    `  ┌─MAIL──┐
+  │ @@@@@ │
+  │ SEND  │
+  └───────┘`,
+    `  ┌─MAIL──┐
+  │ @→YOU │
+  │ OPEN  │
+  └───────┘`,
+  ],
+  shield: [
+    `    ╔═╗
+   ╔╝ ▼╚╗
+  ╔╝ ▓▓▓ ╚╗
+  ║ DEFEND ║
+  ╚════════╝`,
+  ],
+  skull: [
+    `    .---.
+   /  x x\\
+  |   ▽   |
+   \\ ___ /
+    HACK`,
+  ],
+  footer: [
+    `  ╔═══════════════╗
+  ║ 01001000 01000001 ║
+  ║ 01000011 01001011 ║
+  ╚═══════════════╝`,
+  ],
+  divider: [
+    `═══╦═══╦═══╦═══`,
+    `───╫───╫───╫───`,
+  ],
+};
+
+export function getArt(name, frame = 0) {
+  const frames = ASCII_ART[name];
+  if (!frames) return null;
+  return frames[frame % frames.length];
+}
+
+export function listArtNames() {
+  return Object.keys(ASCII_ART);
+}

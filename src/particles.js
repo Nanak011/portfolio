@@ -1,5 +1,22 @@
 import * as THREE from 'three';
 
+function createDigitTexture(char) {
+  const size = 128;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, size, size);
+  ctx.font = 'bold 88px "IBM Plex Mono", "Courier New", monospace';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(char, size / 2, size / 2 + 4);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
 export function initParticles(canvas) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -11,57 +28,68 @@ export function initParticles(canvas) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
-    75,
+    70,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
   );
-  camera.position.z = 50;
+  camera.position.z = 55;
 
-  const PARTICLE_COUNT = 900;
-  const LINE_SAMPLE = 120;
-  const positions = new Float32Array(PARTICLE_COUNT * 3);
-  const velocities = new Float32Array(PARTICLE_COUNT * 3);
-  const colors = new Float32Array(PARTICLE_COUNT * 3);
+  const tex0 = createDigitTexture('0');
+  const tex1 = createDigitTexture('1');
 
-  const palette = [
-    new THREE.Color(0xffee00),
-    new THREE.Color(0xe8e8e8),
-    new THREE.Color(0x888888),
-    new THREE.Color(0x33ff66),
-  ];
+  const palette = [0xffee00, 0xe8e8e8, 0x33ff66, 0x888888, 0xffffff];
+  const COUNT = 320;
+  const bits = [];
+  const group = new THREE.Group();
+  scene.add(group);
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const i3 = i * 3;
-    positions[i3] = (Math.random() - 0.5) * 120;
-    positions[i3 + 1] = (Math.random() - 0.5) * 80;
-    positions[i3 + 2] = (Math.random() - 0.5) * 60;
+  for (let i = 0; i < COUNT; i++) {
+    const isOne = Math.random() > 0.48;
+    const color = palette[Math.floor(Math.random() * palette.length)];
+    const baseOpacity = 0.25 + Math.random() * 0.55;
+    const scale = 0.9 + Math.random() * 1.4;
 
-    velocities[i3] = (Math.random() - 0.5) * 0.02;
-    velocities[i3 + 1] = (Math.random() - 0.5) * 0.02;
-    velocities[i3 + 2] = (Math.random() - 0.5) * 0.01;
+    const material = new THREE.SpriteMaterial({
+      map: isOne ? tex1 : tex0,
+      color,
+      transparent: true,
+      opacity: baseOpacity,
+      depthWrite: false,
+    });
 
-    const c = palette[Math.floor(Math.random() * palette.length)];
-    colors[i3] = c.r;
-    colors[i3 + 1] = c.g;
-    colors[i3 + 2] = c.b;
+    const sprite = new THREE.Sprite(material);
+    sprite.position.set(
+      (Math.random() - 0.5) * 130,
+      (Math.random() - 0.5) * 90,
+      (Math.random() - 0.5) * 50
+    );
+    sprite.scale.set(scale, scale, 1);
+
+    group.add(sprite);
+
+    bits.push({
+      sprite,
+      material,
+      baseOpacity,
+      baseScale: scale,
+      phase: Math.random() * Math.PI * 2,
+      floatSpeed: 0.4 + Math.random() * 1.2,
+      slideX: (Math.random() - 0.5) * 0.025,
+      slideY: Math.random() * 0.02 + 0.005,
+      rain: Math.random() > 0.65,
+      rainSpeed: 0.04 + Math.random() * 0.12,
+      wobble: Math.random() * 0.02,
+      bounds: {
+        x: 65,
+        y: 45,
+        z: 30,
+      },
+    });
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-  const material = new THREE.PointsMaterial({
-    size: 0.35,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.7,
-    sizeAttenuation: true,
-  });
-
-  const particles = new THREE.Points(geometry, material);
-  scene.add(particles);
-
+  // Connection lines between nearby bits
+  const LINE_SAMPLE = 80;
   const maxSegments = LINE_SAMPLE * LINE_SAMPLE;
   const linePositions = new Float32Array(maxSegments * 6);
   const lineGeometry = new THREE.BufferGeometry();
@@ -69,13 +97,14 @@ export function initParticles(canvas) {
   const lineMaterial = new THREE.LineBasicMaterial({
     color: 0xffee00,
     transparent: true,
-    opacity: 0.04,
+    opacity: 0.06,
   });
   const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
   scene.add(lines);
 
   const mouse = { x: 0, y: 0 };
   const targetMouse = { x: 0, y: 0 };
+  const clock = new THREE.Clock();
 
   window.addEventListener('mousemove', (e) => {
     targetMouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -83,30 +112,33 @@ export function initParticles(canvas) {
   });
 
   function updateLines() {
-    const pos = geometry.attributes.position.array;
     const linePos = lineGeometry.attributes.position.array;
     let idx = 0;
-    const threshold = 10;
-    const step = Math.floor(PARTICLE_COUNT / LINE_SAMPLE);
+    const threshold = 12;
+    const step = Math.max(1, Math.floor(bits.length / LINE_SAMPLE));
 
     for (let a = 0; a < LINE_SAMPLE; a++) {
-      const i = a * step;
-      const i3 = i * 3;
+      const bitA = bits[a * step];
+      if (!bitA) break;
+      const posA = bitA.sprite.position;
+
       for (let b = a + 1; b < LINE_SAMPLE; b++) {
-        const j = b * step;
-        const j3 = j * 3;
-        const dx = pos[i3] - pos[j3];
-        const dy = pos[i3 + 1] - pos[j3 + 1];
-        const dz = pos[i3 + 2] - pos[j3 + 2];
+        const bitB = bits[b * step];
+        if (!bitB) break;
+        const posB = bitB.sprite.position;
+
+        const dx = posA.x - posB.x;
+        const dy = posA.y - posB.y;
+        const dz = posA.z - posB.z;
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         if (dist < threshold && idx < linePos.length - 6) {
-          linePos[idx++] = pos[i3];
-          linePos[idx++] = pos[i3 + 1];
-          linePos[idx++] = pos[i3 + 2];
-          linePos[idx++] = pos[j3];
-          linePos[idx++] = pos[j3 + 1];
-          linePos[idx++] = pos[j3 + 2];
+          linePos[idx++] = posA.x;
+          linePos[idx++] = posA.y;
+          linePos[idx++] = posA.z;
+          linePos[idx++] = posB.x;
+          linePos[idx++] = posB.y;
+          linePos[idx++] = posB.z;
         }
       }
     }
@@ -119,51 +151,69 @@ export function initParticles(canvas) {
 
   function animate() {
     requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
     frame++;
 
-    mouse.x += (targetMouse.x - mouse.x) * 0.05;
-    mouse.y += (targetMouse.y - mouse.y) * 0.05;
+    mouse.x += (targetMouse.x - mouse.x) * 0.04;
+    mouse.y += (targetMouse.y - mouse.y) * 0.04;
 
-    const pos = geometry.attributes.position.array;
-    const vel = velocities;
+    const mx = mouse.x * 45;
+    const my = mouse.y * 28;
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const i3 = i * 3;
+    for (const bit of bits) {
+      const { sprite, material, phase, floatSpeed, slideX, slideY, rain, rainSpeed, wobble, bounds } = bit;
+      const pos = sprite.position;
 
-      // Mouse repulsion
-      const mx = mouse.x * 40;
-      const my = mouse.y * 25;
-      const dx = pos[i3] - mx;
-      const dy = pos[i3 + 1] - my;
-      const dist = Math.sqrt(dx * dx + dy * dy) + 0.1;
-      if (dist < 15) {
-        vel[i3] += (dx / dist) * 0.003;
-        vel[i3 + 1] += (dy / dist) * 0.003;
+      // Sine float + drift
+      pos.x += slideX + Math.sin(t * floatSpeed + phase) * wobble;
+      pos.y += Math.cos(t * floatSpeed * 0.7 + phase) * 0.018;
+
+      // Matrix rain slide on subset
+      if (rain) {
+        pos.y -= rainSpeed;
+        pos.x += Math.sin(t * 2 + phase) * 0.008;
+      } else {
+        pos.y += slideY * Math.sin(t * 0.5 + phase);
       }
 
-      pos[i3] += vel[i3];
-      pos[i3 + 1] += vel[i3 + 1];
-      pos[i3 + 2] += vel[i3 + 2];
+      // Mouse repulsion
+      const dx = pos.x - mx;
+      const dy = pos.y - my;
+      const dist = Math.sqrt(dx * dx + dy * dy) + 0.1;
+      if (dist < 18) {
+        pos.x += (dx / dist) * 0.12;
+        pos.y += (dy / dist) * 0.12;
+      }
 
-      // Damping
-      vel[i3] *= 0.99;
-      vel[i3 + 1] *= 0.99;
-      vel[i3 + 2] *= 0.99;
+      // Wrap bounds
+      if (pos.x > bounds.x) pos.x = -bounds.x;
+      if (pos.x < -bounds.x) pos.x = bounds.x;
+      if (pos.y > bounds.y) pos.y = -bounds.y;
+      if (pos.y < -bounds.y) pos.y = bounds.y;
+      if (pos.z > bounds.z) pos.z = -bounds.z;
+      if (pos.z < -bounds.z) pos.z = bounds.z;
 
-      // Bounds wrap
-      if (pos[i3] > 60) pos[i3] = -60;
-      if (pos[i3] < -60) pos[i3] = 60;
-      if (pos[i3 + 1] > 40) pos[i3 + 1] = -40;
-      if (pos[i3 + 1] < -40) pos[i3 + 1] = 40;
+      // Pulse opacity + scale breathe
+      material.opacity = bit.baseOpacity + Math.sin(t * 2.5 + phase) * 0.12;
+      const breathe = 1 + Math.sin(t * 1.8 + phase) * 0.08;
+      sprite.scale.set(bit.baseScale * breathe, bit.baseScale * breathe, 1);
+
+      // Subtle Z depth slide
+      pos.z += Math.sin(t * 0.6 + phase) * 0.006;
     }
 
-    geometry.attributes.position.needsUpdate = true;
+    if (frame % 4 === 0) updateLines();
 
-    if (frame % 3 === 0) updateLines();
+    // Parallax tilt on entire field
+    group.rotation.x = mouse.y * 0.12 + Math.sin(t * 0.15) * 0.04;
+    group.rotation.y = mouse.x * 0.12 + Math.cos(t * 0.12) * 0.03;
+    group.position.x = mouse.x * 3;
+    group.position.y = mouse.y * 2;
 
-    particles.rotation.y += 0.0003;
-    particles.rotation.x = mouse.y * 0.05;
-    particles.rotation.y += mouse.x * 0.0005;
+    // Slow global rotation
+    group.rotation.z = Math.sin(t * 0.08) * 0.02;
+
+    lineMaterial.opacity = 0.04 + Math.sin(t * 0.5) * 0.025;
 
     renderer.render(scene, camera);
   }
